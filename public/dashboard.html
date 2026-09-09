@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard · Expense Tracker</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h2>💰 Expense Tracker</h2>
+    <div id="userBox" class="user-box"></div>
+  </header>
+
+  <main class="container">
+
+    <!-- STEP 1: choose / create sheet -->
+    <section id="sheetSection" class="card">
+      <h3>1. Choose your Google Sheet</h3>
+      <p class="muted">All your expense data lives in a Google Sheet you own — nothing is stored on our server.</p>
+
+      <div id="currentSheetBanner" class="banner hidden"></div>
+
+      <div class="grid-2">
+        <div>
+          <h4>Create a new sheet</h4>
+          <input id="newSheetTitle" type="text" placeholder="e.g. September Expenses" />
+          <button id="createSheetBtn" class="btn primary">+ Create New Sheet</button>
+        </div>
+        <div>
+          <h4>...or use an existing one</h4>
+          <div id="sheetList" class="sheet-list">Loading your sheets…</div>
+          <details class="manual-select">
+            <summary>Paste a Sheet URL / ID instead</summary>
+            <input id="manualSheetId" type="text" placeholder="Paste Google Sheet URL or ID" />
+            <button id="manualSelectBtn" class="btn secondary">Use this sheet</button>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: manage expenses (hidden until a sheet is selected) -->
+    <section id="expenseSection" class="card hidden">
+      <div class="row-between">
+        <h3>2. Manage Expenses</h3>
+        <button id="changeSheetBtn" class="btn ghost small">Change sheet</button>
+      </div>
+
+      <form id="expenseForm" class="expense-form">
+        <input type="hidden" id="editRowIndex" value="" />
+        <input type="date" id="fDate" required />
+        <input type="text" id="fCategory" list="categoryOptions" placeholder="Category (e.g. Food)" required />
+        <datalist id="categoryOptions"></datalist>
+        <input type="text" id="fDescription" placeholder="Description (optional)" />
+        <input type="number" id="fAmount" step="0.01" min="0" placeholder="Amount" required />
+        <button type="submit" id="submitBtn" class="btn primary">Add Expense</button>
+        <button type="button" id="cancelEditBtn" class="btn ghost hidden">Cancel</button>
+      </form>
+
+      <div id="formError" class="error hidden"></div>
+
+      <div class="table-wrap">
+        <table id="expenseTable">
+          <thead>
+            <tr><th>Date</th><th>Category</th><th>Description</th><th>Amount</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="expenseTbody">
+            <tr><td colspan="5" class="muted">Loading expenses…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- STEP 3: summaries -->
+    <section id="summarySection" class="card hidden">
+      <h3>3. Summary</h3>
+      <div class="grid-2">
+        <div>
+          <h4>Totals by Category</h4>
+          <table class="summary-table">
+            <thead><tr><th>Category</th><th>Total</th></tr></thead>
+            <tbody id="categoryTotalsBody"></tbody>
+          </table>
+        </div>
+        <div>
+          <h4>Monthly Summary</h4>
+          <table class="summary-table">
+            <thead><tr><th>Month</th><th>Total</th></tr></thead>
+            <tbody id="monthlyTotalsBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="grand-total" id="grandTotal"></div>
+    </section>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
